@@ -72,10 +72,7 @@ router.route("/ask").post(async function (req, res) {
 });
 
 router.route("/:id/votes-update").post(function (req, res) {
-  var { action, id } = req.body
-  console.log(id);
-  // if (!id)
-  //   id = req.user.id
+  var { action, user_id } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
   var updatedSingleQuestion
