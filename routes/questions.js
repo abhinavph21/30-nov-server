@@ -70,25 +70,7 @@ router.route("/ask").post(async function (req, res) {
     res.send({success: false}) 
   }
 });
-// router.route("/ask").post(function (req, res) {
-//   console.log(req.user);
-//   let id = req.user.id
-//   let newAskQuestion = new Question({
-//     user_id: id,
-//     title: req.body.title,
-//     body: req.body.body,
-//     tags: req.body.tags,
-//     votes: [],
-//     answers: [],
-//   });
-//   newAskQuestion.save((err,doc) => {
-//     if(err)
-//       console.log(err)
-//     if (doc){
-//       console.log("asked");
-//       res.send({ success: true })
-//     }
-//  })
+
 router.route("/:id/votes-update").post(function (req, res) {
   var { action, id } = req.body
   console.log(id);
@@ -129,14 +111,14 @@ router.route("/:id/votes-update").post(function (req, res) {
       }
       updatedSingleQuestion.votes = voteArr
       //
-      Question.updateOne(myquery,
-        { $set: { votes: voteArr } },
-        { writeConcern: { w: "majority", wtimeout: 5000 } },
-        function (err, result) {
-          if (err) throw err;
-          res.send(updatedSingleQuestion)
-        }
-      );
+//       Question.updateOne(myquery,
+//         { $set: { votes: voteArr } },
+//         { writeConcern: { w: "majority", wtimeout: 5000 } },
+//         function (err, result) {
+//           if (err) throw err;
+//           res.send(updatedSingleQuestion)
+//         }
+//       );
     }
   })
 });
