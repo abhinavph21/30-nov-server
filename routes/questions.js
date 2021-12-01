@@ -110,15 +110,14 @@ router.route("/:id/votes-update").post(function (req, res) {
         voteArr.push({ uid: id, vote: x })
       }
       updatedSingleQuestion.votes = voteArr
-      //
-//       Question.updateOne(myquery,
-//         { $set: { votes: voteArr } },
-//         { writeConcern: { w: "majority", wtimeout: 5000 } },
-//         function (err, result) {
-//           if (err) throw err;
-//           res.send(updatedSingleQuestion)
-//         }
-//       );
+      Question.updateOne(myquery,
+        { $set: { votes: voteArr } },
+        { writeConcern: { w: "majority", wtimeout: 5000 } },
+        function (err, result) {
+          if (err) throw err;
+          res.send(updatedSingleQuestion)
+        }
+      );
     }
   })
 });
