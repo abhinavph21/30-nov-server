@@ -73,13 +73,14 @@ router.route("/ask").post(function (req, res) {
     votes: [],
     answers: [],
   });
-  newAskQuestion.save().then((doc) => {
+  newAskQuestion.save((err,doc) => {
+    if(err)
+      console.log(err)
     if (doc){
       console.log("asked");
       res.send({ success: true })
     }
-    })
-});
+ })
 router.route("/:id/votes-update").post(function (req, res) {
   var { action, id } = req.body
   console.log(id);
