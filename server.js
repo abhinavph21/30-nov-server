@@ -101,7 +101,7 @@ app.post("/register", (function (req, res) {
         password: hashedPassword,
       });
       await newUser.save()
-      res.send({ success: true, message: "Registered User" })
+      res.send({ success: true, message: "Successfully registered user" })
     }
   })
 })
