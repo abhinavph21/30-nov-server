@@ -26,8 +26,9 @@ mongoose.connect(process.env.ATLAS_URI, {
 app.use(express.json());
 app.set('trust proxy', 1)
 app.use(cors({
-  origin: "https://myproject-client.netlify.app",
+  origin: "http://localhost:3000",
 //   "http://localhost:3000",
+//   https://myproject-client.netlify.app
   methods: ["GET", "POST"],
   credentials: true,
   exposedHeaders: ["Set-Cookie"]
@@ -66,11 +67,12 @@ app.use(passport.session())
 require("./passportConfig")(passport);
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   next();
 });
+// https://myproject-client.netlify.app
 //----------------------------------------- END OF MIDDLEWARE---------------------------------------------------
 
 const questionsObj = require("./routes/questions");
