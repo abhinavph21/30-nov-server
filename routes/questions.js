@@ -72,13 +72,12 @@ router.route("/ask").post(async function (req, res) {
 });
 
 router.route("/:id/votes-update").post(function (req, res) {
-  var { action, user_id } = req.body
+  var { action, userid } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
   var updatedSingleQuestion
-  Question.findOne({ myquery }, function (err, foundQuestion) {
+  Question.findOne(myquery, function (err, foundQuestion) {
     if (err) throw err;
-    //
     if (foundQuestion) {
       updatedSingleQuestion = foundQuestion
       voteArr = foundQuestion.votes
@@ -87,7 +86,7 @@ router.route("/:id/votes-update").post(function (req, res) {
       if (voteArr.length != 0) {
         voteArr.forEach((element, index) => {
           if (element && element.uid) {
-            if (element.uid === (id)) {
+            if (element.uid === (userid)) {
               findex = index
               if (action === "increase" && voteArr[findex].vote < 1)
                 voteArr[findex].vote += 1
