@@ -49,7 +49,20 @@ router.route("/singleQuestion/:id").get(function (req, res) {
     res.json(result);
   });
 });
-router.route("/ask").post(async function (req, res) {
+// router.route("/ask").post(async function (req, res) {
+//   console.log(req.user);
+//   let id = req.user.id
+//   let newAskQuestion = new Question({
+//     user_id: id,
+//     title: req.body.title,
+//     body: req.body.body,
+//     tags: req.body.tags,
+//     votes: [],
+//     answers: [],
+//   });
+//   await newAskQuestion.save()
+// });
+router.route("/ask").post(function (req, res) {
   console.log(req.user);
   let id = req.user.id
   let newAskQuestion = new Question({
@@ -60,7 +73,10 @@ router.route("/ask").post(async function (req, res) {
     votes: [],
     answers: [],
   });
-  await newAskQuestion.save()
+  newAskQuestion.save().then((doc) => {
+    if (doc)
+      res.send({ success: true })
+  })
 });
 router.route("/:id/votes-update").post(function (req, res) {
   var { action, id } = req.body
