@@ -25,14 +25,23 @@ mongoose.connect(process.env.ATLAS_URI, {
 // Middleware
 app.use(express.json());
 app.set('trust proxy', 1)
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  next();
+});
+
 app.use(cors({
   origin: "http://localhost:3000",
-//   "http://localhost:3000",
-//   https://myproject-client.netlify.app
   methods: ["GET", "POST"],
   credentials: true,
   exposedHeaders: ["Set-Cookie"]
 }));
+//   "http://localhost:3000",
+//   https://myproject-client.netlify.app
 app.use(session({
   secret: "Our little secret",
   resave: false,
@@ -42,36 +51,12 @@ app.use(session({
     secure: true,
   }
 }))
-//     secure: true,
-// var sessionConfig = {
-//   secret: "Our little secret",
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie: {
-//     sameSite: 'none',
-//   }
-// }
-// };
-
-// if (process.env.NODE_ENV === 'production') {
-//   app.set('trust proxy', 1); // trust first proxy
-//   sessionConfig.cookie.secure = true; // serve secure cookies
-// }
-
-// app.use(session(sessionConfig));
 
 app.use(cookieParser("Our little secret"));
 app.use(passport.initialize())
 app.use(passport.session())
 
 require("./passportConfig")(passport);
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-  next();
-});
 // https://myproject-client.netlify.app
 //----------------------------------------- END OF MIDDLEWARE---------------------------------------------------
 
@@ -140,6 +125,23 @@ app.listen(PORT, () => {
 
 module.exports = User
 
+//     secure: true,
+// var sessionConfig = {
+//   secret: "Our little secret",
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//     sameSite: 'none',
+//   }
+// }
+// };
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.set('trust proxy', 1); // trust first proxy
+//   sessionConfig.cookie.secure = true; // serve secure cookies
+// }
+
+// app.use(session(sessionConfig));
 
 // app.route("/login").post(function (req, res) {
 //   passport.authenticate('local', function (err, user) {
