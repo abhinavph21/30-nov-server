@@ -80,7 +80,7 @@ app.use("/questions", questionsObj);
 
 
 app.get("/", (req, res) => {
-  console.log(req);
+//   console.log(req);
   if (req.user) {
     // console.log(req.user);
     res.send({ success: true, user: req.user })
