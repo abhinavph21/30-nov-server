@@ -35,18 +35,19 @@ app.use(cors({
 //   "http://localhost:3000",
 //   https://myproject-client.netlify.app
 
-// app.use(function (req, res, next) {
-//   res.header('Access-Control-Allow-Credentials', true);
-//    res.header('Access-Control-Allow-Origin', req.headers.origin);
-// //     res.header("Access-Control-Allow-Origin", "");
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-res.set('Access-Control-Allow-Credentials', true);
-res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
-res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header("Access-Control-Allow-Origin", "https://myproject-client.netlify.app");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+// res.set('Access-Control-Allow-Credentials', true);
+// res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
+// res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+// res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 app.use(session({
   secret: "Our little secret",
