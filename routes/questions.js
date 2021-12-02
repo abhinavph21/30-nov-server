@@ -71,7 +71,7 @@ router.route("/ask").post(async function (req, res) {
   }
 });
 
-router.route("/:id/votes-update").post(function (req, res) {
+router.route("/votes-update/:id").post(function (req, res) {
   var { action, userid } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
@@ -117,7 +117,7 @@ router.route("/:id/votes-update").post(function (req, res) {
     }
   })
 });
-router.route("/:id/add-answer").post(function (req, res) {
+router.route("/add-answer/:id").post(function (req, res) {
   const { aid: id, votes: v, body: b } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   let updatedSingleQuestion
@@ -142,7 +142,7 @@ router.route("/:id/add-answer").post(function (req, res) {
     );
   })
 });
-router.route("/:id/answer-votes-update").post(function (req, res) {
+router.route("/answer-votes-update/:id").post(function (req, res) {
   const { action, ansid } = req.body
   const { id } = req.user
   // console.log("found", id.toString());
