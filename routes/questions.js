@@ -5,6 +5,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 const questionSchema = new mongoose.Schema({
   user_id: String,
+  user_name: String,
   title: String,
   body: String,
   tags: Array,
