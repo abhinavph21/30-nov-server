@@ -72,15 +72,15 @@ router.route("/ask").post(async function (req, res) {
 });
 
 router.route("/votes-update/:id").post(function (req, res) {
+  res.set('Access-Control-Allow-Credentials', true);
+  res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
+  res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   var { action, userid } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
   var updatedSingleQuestion
   Question.findOne(myquery, function (err, foundQuestion) {
-    res.set('Access-Control-Allow-Credentials', true);
-          res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
-          res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-          res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     if (err) throw err;
     if (foundQuestion) {
       updatedSingleQuestion = foundQuestion
