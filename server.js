@@ -43,7 +43,10 @@ app.use(cors({
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   next();
 // });
-
+res.set('Access-Control-Allow-Credentials', true);
+res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
+res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 app.use(session({
   secret: "Our little secret",
