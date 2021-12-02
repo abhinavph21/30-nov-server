@@ -55,6 +55,7 @@ router.route("/ask").post(async function (req, res) {
   try{
     let newAskQuestion = new Question({
       user_id: id,
+      user_name: req.user.name, 
       title: req.body.title,
       body: req.body.body,
       tags: req.body.tags,
