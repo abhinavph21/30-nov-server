@@ -41,6 +41,20 @@ router.route("/tagged/:tag").get(function (req, res) {
     res.send(result)
   })
 });
+router.route("/byuser/:id").get(function (req, res) {
+  let uid = req.params.id
+  Question.find({
+    user_id: uid
+  }, function (err, result) {
+    if (err)  
+    {
+      res.send({success: false})
+      throw err;
+    }
+    console.log(result);
+    res.send({success: false, fQouestions: result})
+  })
+});
 router.route("/singleQuestion/:id").get(function (req, res) {
   // console.log(req.params.id);
   let myquery = { _id: ObjectId(req.params.id) };
