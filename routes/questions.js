@@ -122,7 +122,7 @@ router.route("/votes-update/:id").post(function (req, res) {
   })
 });
 router.route("/add-answer/:id").post(function (req, res) {
-  const { aid: id, votes: v, body: b } = req.body
+  const { aid: id, username: usname, body: b, votes: v } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   let updatedSingleQuestion
   let answersArr
@@ -132,7 +132,7 @@ router.route("/add-answer/:id").post(function (req, res) {
     updatedSingleQuestion = foundQuestion
     answersArr = foundQuestion.answers
     if (answersArr)
-      answersArr.push({ aid: id, votes: v, body: b })
+      answersArr.push({ aid: id, usname: usname, body: b, votes: v })
     else
       updatedSingleQuestion.answers = answersArr
     console.log(updatedSingleQuestion.answers);
