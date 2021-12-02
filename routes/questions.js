@@ -111,6 +111,10 @@ router.route("/votes-update/:id").post(function (req, res) {
         { writeConcern: { w: "majority", wtimeout: 5000 } },
         function (err, result) {
           if (err) throw err;
+          res.set('Access-Control-Allow-Credentials', true);
+          res.set('Access-Control-Allow-Origin', "https://myproject-client.netlify.app");
+          res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+          res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
           res.send(updatedSingleQuestion)
         }
       );
