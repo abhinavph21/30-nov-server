@@ -46,13 +46,12 @@ router.route("/byuser/:id").get(function (req, res) {
   Question.find({
     user_id: uid
   }, function (err, result) {
-    if (err)  
-    {
-      res.send({success: false})
+    if (err) {
+      res.send({ success: false })
       throw err;
     }
     console.log(result);
-    res.send({success: false, fQouestions: result})
+    res.send({ success: true, fQuestions: result })
   })
 });
 router.route("/singleQuestion/:id").get(function (req, res) {
@@ -67,32 +66,30 @@ router.route("/singleQuestion/:id").get(function (req, res) {
 router.route("/ask").post(async function (req, res) {
   console.log(req.user);
   let id = req.user.id
-  try{
+  try {
     let newAskQuestion = new Question({
       user_id: id,
-      user_name: req.user.name, 
+      user_name: req.user.name,
       title: req.body.title,
       body: req.body.body,
       tags: req.body.tags,
       votes: [],
       answers: [],
     });
-    let doc=await newAskQuestion.save()
-    
-    res.send({success: true,ques: doc})
+    let doc = await newAskQuestion.save()
+
+    res.send({ success: true, ques: doc })
   }
-  catch(err){
+  catch (err) {
     console.log(err);
-    res.send({success: false}) 
+    res.send({ success: false })
   }
 });
 
 router.route("/votes-update/:id").post(function (req, res) {
-//   res.set('Access-Control-Allow-Credentials', true);
-//   res.set('Access-Control-Allow-Origin', "http://localhost:3000");
-//   res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-//   res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   var { action, userid } = req.body
+  if (userid === null)
+    res.send({ success: false })
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
   var updatedSingleQuestion
@@ -123,15 +120,17 @@ router.route("/votes-update/:id").post(function (req, res) {
           x = 1;
         else
           x = -1
-        voteArr.push({ uid: id, vote: x })
+        voteArr.push({ uid: userid, vote: x })
       }
       updatedSingleQuestion.votes = voteArr
+      console.log(voteArr)
       Question.updateOne(myquery,
         { $set: { votes: voteArr } },
         { writeConcern: { w: "majority", wtimeout: 5000 } },
         function (err, result) {
           if (err) throw err;
-          res.send(updatedSingleQuestion)
+          console.log(result)
+          res.send({ success: true, message: updatedSingleQuestion })
         }
       );
     }

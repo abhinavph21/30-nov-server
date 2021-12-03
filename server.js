@@ -26,17 +26,18 @@ mongoose.connect(process.env.ATLAS_URI, {
 app.use(express.json());
 //  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "https://myproject-client.netlify.app",
   methods: ["GET", "POST"],
   credentials: true,
-  exposedHeaders: ["Set-Cookie", "Origin", "X-Requested-With", "Content-Type"]
+  exposedHeaders: ["Set-Cookie"]
 }));
+// , "Origin", "X-Requested-With", "Content-Type"
 //   origin: "https://myproject-client.netlify.app",
 
 app.set('trust proxy', 1)
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "https://myproject-client.netlify.app");
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -53,11 +54,11 @@ app.use(session({
   }
 }))
 
-app.use(function(req,res,next){
-if(!req.session){
+app.use(function (req, res, next) {
+  if (!req.session) {
     return next(new Error('Oh no')) //handle error
-}
-next() //otherwise continue
+  }
+  next() //otherwise continue
 });
 
 app.use(cookieParser("Our little secret"));
@@ -73,7 +74,7 @@ app.use("/questions", questionsObj);
 
 
 app.get("/", (req, res) => {
-//   console.log(req);
+  //   console.log(req);
   if (req.user) {
     // console.log(req.user);
     res.send({ success: true, user: req.user })
