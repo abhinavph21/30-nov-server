@@ -27,7 +27,7 @@ app.use(express.json());
 app.set('trust proxy', 1)
 //  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "*",
   methods: ["GET", "POST"],
   credentials: true,
   exposedHeaders: ["Set-Cookie"]
