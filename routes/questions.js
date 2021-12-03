@@ -88,10 +88,10 @@ router.route("/ask").post(async function (req, res) {
 });
 
 router.route("/votes-update/:id").post(function (req, res) {
-  res.set('Access-Control-Allow-Credentials', true);
-  res.set('Access-Control-Allow-Origin', "http://localhost:3000");
-  res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   res.set('Access-Control-Allow-Credentials', true);
+//   res.set('Access-Control-Allow-Origin', "http://localhost:3000");
+//   res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+//   res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   var { action, userid } = req.body
   let myquery = { _id: ObjectId(req.params.id) };
   var voteArr = []
