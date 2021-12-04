@@ -109,7 +109,7 @@ router.route("/votes-update/:id").post(function (req, res) {
                 let x = 0
                 if (voteArr[findex].vote === 1)
                   x = 0
-                if (voteArr[findex].vote === 0)
+                else if (voteArr[findex].vote === 0)
                   x = 1
                 else
                   x = voteArr[findex].vote + 1
@@ -118,7 +118,7 @@ router.route("/votes-update/:id").post(function (req, res) {
                 let x = 0
                 if (voteArr[findex].vote === -1)      // "decrease"
                   x = 0
-                if (voteArr[findex].vote === 0)
+                else if (voteArr[findex].vote === 0)
                   x = -1
                 else
                   x = voteArr[findex].vote - 1
@@ -209,7 +209,7 @@ router.route("/answer-votes-update/:id").post(function (req, res) {
                 let x = 0
                 if (ansVotesArr[findex].vote === 1)
                   x = 0
-                if (ansVotesArr[findex].vote === 0)
+                else if (ansVotesArr[findex].vote === 0)
                   x = 1
                 else
                   x = ansVotesArr[findex].vote + 1
@@ -218,7 +218,7 @@ router.route("/answer-votes-update/:id").post(function (req, res) {
                 let x = 0
                 if (ansVotesArr[findex].vote === -1)      // "decrease"
                   x = 0
-                if (ansVotesArr[findex].vote === 0)
+                else if (ansVotesArr[findex].vote === 0)
                   x = -1
                 else
                   x = ansVotesArr[findex].vote - 1
