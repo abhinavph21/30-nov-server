@@ -105,10 +105,21 @@ router.route("/votes-update/:id").post(function (req, res) {
           if (element && element.uid) {
             if (element.uid === (userid)) {
               findex = index
-              if (action === "increase" && voteArr[findex].vote < 1)
-                voteArr[findex].vote += 1
-              if (action === "decrease" && voteArr[findex].vote > -1)
-                voteArr[findex].vote -= 1
+              if (action === "increase") {
+                if (voteArr[findex].vote === 1)
+                  voteArr[findex].vote = 0
+                if (voteArr[findex].vote === 0)
+                  voteArr[findex].vote = 1
+                else
+                  voteArr[findex].vote += 1
+              } else {
+                if (voteArr[findex].vote === -1)      // "decrease"
+                  voteArr[findex].vote = 0
+                if (voteArr[findex].vote === 0)
+                  voteArr[findex].vote = -1
+                else
+                  voteArr[findex].vote -= 1
+              }
             }
           }
         })
@@ -190,10 +201,25 @@ router.route("/answer-votes-update/:id").post(function (req, res) {
             if ((element.uid).toString() === (id.toString())) {
               findex = index
               console.log("found", findex)
-              if (action === "increase" && ansVotesArr[findex].vote < 1)
-                ansVotesArr[findex].vote += 1
-              if (action === "decrease" && ansVotesArr[findex].vote > -1)
-                ansVotesArr[findex].vote -= 1
+              if (action === "increase") {
+                if (ansVotesArr[findex].vote === 1)
+                  ansVotesArr[findex].vote = 0
+                if (ansVotesArr[findex].vote === 0)
+                  ansVotesArr[findex].vote = 1
+                else
+                  ansVotesArr[findex].vote += 1
+              } else {
+                if (ansVotesArr[findex].vote === -1)      // "decrease"
+                  ansVotesArr[findex].vote = 0
+                if (ansVotesArr[findex].vote === 0)
+                  ansVotesArr[findex].vote = -1
+                else
+                  ansVotesArr[findex].vote -= 1
+              }
+              // if (action === "increase" && ansVotesArr[findex].vote < 1)
+              //   ansVotesArr[findex].vote += 1
+              // if (action === "decrease" && ansVotesArr[findex].vote > -1)
+              //   ansVotesArr[findex].vote -= 1
             }
           }
         })
