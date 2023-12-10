@@ -3,24 +3,6 @@ const router = express.Router();
 const mongoose = require("mongoose")
 const ObjectId = require("mongodb").ObjectId;
 
-const questionSchema = new mongoose.Schema({
-  user_id: String,
-  user_name: String,
-  title: String,
-  body: String,
-  tags: Array,
-  votes: Array,
-  answers: Array,
-},
-  {
-    writeConcern: {
-      w: 'majority',
-      j: true,
-      wtimeout: 1000
-    }
-  })
-const Question = mongoose.model("question", questionSchema)
-
 router.route("/").get(function (req, res) {
   Question.find({}, (err, result) => {
     if (err)
@@ -66,23 +48,28 @@ router.route("/singleQuestion/:id").get(function (req, res) {
 router.route("/ask").post(async function (req, res) {
   console.log(req.user);
   let id = req.user.id
-  try {
-    let newAskQuestion = new Question({
-      user_id: id,
-      user_name: req.user.name,
-      title: req.body.title,
-      body: req.body.body,
-      tags: req.body.tags,
-      votes: [],
-      answers: [],
-    });
-    let doc = await newAskQuestion.save()
-
-    res.send({ success: true, ques: doc })
-  }
-  catch (err) {
-    console.log(err);
-    res.send({ success: false })
+  if(req.user.id!=""){
+    id=req.user.id
+    try {
+      let newAskQuestion = new Question({
+        user_id: id,
+        user_name: req.user.name,
+        title: req.body.title,
+        body: req.body.body,
+        tags: req.body.tags,
+        votes: [],
+        answers: [],
+      });
+      let doc = await newAskQuestion.save()
+  
+      res.send({ success: true, ques: doc })
+    }
+    catch (err) {
+      console.log(err);
+      res.send({ success: false })
+    }
+  }else{
+    res.send({success: "notLoggedIn"})
   }
 });
 

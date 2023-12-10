@@ -1,26 +1,26 @@
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config();
 const mongoose = require("mongoose")
 const express = require("express");
 const cors = require("cors");
-// const dbo = require("./db/conn");
 // const saltRounds = 10
 const passport = require("passport")
-const passportLocal = require("passport-local").Strategy;
+// const passportLocal = require("passport-local").Strategy;
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcryptjs")
 const session = require("express-session")
 const app = express();
-const PORT = process.env.PORT || 5000;
-const User = require("./user");
+// const PORT = process.env.PORT || 5000;
+const PORT = 8000;
 const ObjectId = require("mongodb").ObjectId;
-// 
+const User = require("./models/User")
+console.log(process.env.ATLAS_URI);
 mongoose.connect(process.env.ATLAS_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
   .then(() => {
     console.log("MongoDB Atlas Connected…")
-  })
+  }).catch(err=>console.log(err))
 
 // Middleware
 app.use(express.json());
@@ -34,54 +34,45 @@ app.use(cors({
 // , "Origin", "X-Requested-With", "Content-Type"
 //   origin: "https://myproject-client.netlify.app",
 
-app.set('trust proxy', 1)
+// app.set('trust proxy', 1)
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://myproject-client.netlify.app");
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "https://myproject-client.netlify.app");
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 app.use(session({
   secret: "Our little secret",
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    sameSite: 'none',
-    secure: true,
-  }
+  // cookie: {
+  //   sameSite: 'none',
+  //   secure: true,
+  // }
 }))
 
 app.use(function (req, res, next) {
   if (!req.session) {
-    return next(new Error('Oh no')) //handle error
+    return next(new Error('session expired')) //handle error
   }
   next() //otherwise continue
 });
+
+require("./passportConfig")(passport);
 
 app.use(cookieParser("Our little secret"));
 app.use(passport.initialize())
 app.use(passport.session())
 
-require("./passportConfig")(passport);
 // https://myproject-client.netlify.app
 //----------------------------------------- END OF MIDDLEWARE---------------------------------------------------
 
-const questionsObj = require("./routes/questions");
-app.use("/questions", questionsObj);
+const questionsRoute = require("./routes/questions");
+app.use("/questions", passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }), questionsRoute);
 
-
-app.get("/", (req, res) => {
-  //   console.log(req);
-  if (req.user) {
-    // console.log(req.user);
-    res.send({ success: true, user: req.user })
-  }
-  else
-    res.send({ success: false })
-})
 
 app.post("/register", (function (req, res) {
   User.findOne({ username: req.body.email }, async (err, foundUser) => {
@@ -103,10 +94,9 @@ app.post("/register", (function (req, res) {
 })
 )
 app.post("/login", (req, res, next) => {
-  // console.log(req.user);
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
-    if (!user) res.send("No User Exists");
+    if (!user) res.send({success: false, message: "Invalid username or password"});
     else {
       req.logIn(user, (err) => {
         if (err) throw err;

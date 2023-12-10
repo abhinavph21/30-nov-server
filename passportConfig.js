@@ -1,10 +1,10 @@
-const User = require("./user")
+const User = require("./models/User")
 const bcrypt = require("bcryptjs");
-const localStrategy = require("passport-local").Strategy;
-const ObjectId = require("mongodb").ObjectId;
+const LocalStrategy = require("passport-local").Strategy;
+// const ObjectId = require("mongodb").ObjectId;
 
 module.exports = function (passport) {
-    passport.use(new localStrategy((username, password, done) => {
+    passport.use(new LocalStrategy((username, password, done) => {
         User.findOne({ username: username }, (err, user) => {
             if (err) throw err;
             if (!user) return done(null, false);
@@ -34,9 +34,3 @@ module.exports = function (passport) {
         });
     });
 };
-
-
-// {
-//     usernameField: 'email',
-//         passwordField: 'password'
-// },
